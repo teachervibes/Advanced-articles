@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>English Articles Practice</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: #f3f4f6;
+            color: #1f2937;
+        }
+        select {
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%231f2937%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+            background-repeat: no-repeat;
+            background-position: right .5rem top 50%;
+            background-size: .65rem auto;
+            padding-right: 1.5rem !important;
+        }
+        .correct {
+            background-color: #dcfce7 !important;
+            border-color: #22c55e !important;
+            color: #166534 !important;
+        }
+        .incorrect {
+            background-color: #fee2e2 !important;
+            border-color: #ef4444 !important;
+            color: #991b1b !important;
+        }
+    </style>
+</head>
+<body class="p-4 md:p-8">
+
+    <div class="max-w-4xl mx-auto bg-white rounded-xl shadow-lg overflow-hidden">
+        <!-- Header -->
+        <div class="bg-blue-800 text-white p-6 md:p-8">
+            <h1 class="text-3xl font-bold mb-2">English Articles Practice</h1>
+            <p class="text-blue-100 text-lg">Focus: Definite, Indefinite, and Zero Articles</p>
+        </div>
+
+        <!-- Instructions -->
+        <div class="p-6 md:p-8 border-b border-gray-200 bg-blue-50">
+            <h2 class="font-semibold text-lg mb-2 text-blue-900">Instructions:</h2>
+            <p class="text-gray-700">
+                Read the sentences below. Select the correct article (<strong>a</strong>, <strong>an</strong>, or <strong>the</strong>) for each blank space. 
+                If the sentence does not need an article, select <strong>- (no article)</strong>.
+            </p>
+        </div>
+
+        <!-- Quiz Container -->
+        <div class="p-6 md:p-8">
+            <div id="quiz-container" class="space-y-6">
+                <!-- Sentences will be injected here by JavaScript -->
+            </div>
+
+            <!-- Controls and Results -->
+            <div class="mt-10 pt-6 border-t border-gray-200 flex flex-col items-center">
+                <div class="flex gap-4 mb-6">
+                    <button onclick="checkAnswers()" class="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-semibold rounded-lg shadow transition-colors focus:outline-none focus:ring-4 focus:ring-blue-300">
+                        Check Answers
+                    </button>
+                    <button onclick="resetQuiz()" class="px-6 py-3 bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold rounded-lg shadow transition-colors focus:outline-none focus:ring-4 focus:ring-gray-300">
+                        Reset
+                    </button>
+                </div>
+                
+                <div id="result-message" class="hidden w-full max-w-md p-4 rounded-lg text-center text-lg font-medium transition-all">
+                    <!-- Result text appears here -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // The master list of sentences. 
+        // Put the correct answer inside brackets [a], [an], [the], or [-] for no article.
+        // The script will automatically build the dropdowns based on these brackets.
+        const rawSentences = [
+            "We know that [-] history is often written by [the] victors, but modern historians try to uncover [-] marginalized voices.",
+            "Scholars note that [the] concept of [-] democracy originated in [-] ancient Greece.",
+            "In [the] novel 1984, George Orwell explores [the] dangers of [-] totalitarianism.",
+            "After decades of tension, [the] Soviet Union collapsed in 1991, ending [the] Cold War.",
+            "Critics point out that [-] capitalism creates [-] severe inequality alongside economic growth.",
+            "During the late 18th century, [the] French Revolution was fueled by [a] desire for [-] liberty and [-] equality.",
+            "She is writing [an] essay on [the] symbolism of [-] water in Shakespeare's plays.",
+            "A functioning society requires that [-] freedom of [the] press is protected.",
+            "Following the conflict, [the] United Nations was established to prevent [-] future wars.",
+            "Teachers argue that reading [-] classic literature gives us [a] deeper understanding of [-] human nature.",
+            "He gave [an] impassioned speech about [the] importance of [-] universal healthcare.",
+            "In 1914, [the] assassination of Archduke Franz Ferdinand triggered [the] outbreak of [-] World War I.",
+            "Researchers often cite [-] Norway as [a] successful example of [a] social democracy.",
+            "Throughout the centuries, [-] revolutions have frequently been sparked by [-] economic hardship.",
+            "As the plot unfolds, [the] protagonist of [the] story faces [an] impossible moral dilemma.",
+            "To manage its internal market, [the] European Union relies on [-] complex treaties.",
+            "The establishment of [the] welfare state profoundly changed [-] society, leading to [the] rise of [the] middle class.",
+            "To convey complex emotions, [-] poetry often relies heavily on [-] metaphor.",
+            "To stay in [-] power, [a] prime minister must maintain [the] confidence of [the] parliament.",
+            "At its peak, [the] Roman Empire stretched across [-] Europe, [-] North Africa, and [the] Middle East.",
+            "Experts agree that [-] climate change is [the] most pressing issue facing [the] international community today.",
+            "She works as [a] professor of [-] contemporary literature at [the] University of Oslo.",
+            "Across the globe, [the] struggle for [-] civil rights remains [an] ongoing process.",
+            "According to Marxist theory, [-] socialism emphasizes [the] collective ownership of [the] means of [-] production.",
+            "For decades, [the] Berlin Wall divided [the] city into [an] eastern and [a] western sector."
+        ];
+
+        const quizContainer = document.getElementById('quiz-container');
+        let correctAnswersMap = {};
+        let selectCounter = 0;
+
+        // Initialize the quiz
+        function buildQuiz() {
+            quizContainer.innerHTML = '';
+            correctAnswersMap = {};
+            selectCounter = 0;
+
+            rawSentences.forEach((sentence, index) => {
+                const sentenceDiv = document.createElement('div');
+                sentenceDiv.className = "text-lg text-gray-800 leading-loose pb-4 border-b border-gray-100 last:border-0";
+                
+                // Replace bracketed answers with select elements
+                let formattedSentence = sentence.replace(/\[(.*?)\]/g, (match, correctAnswer) => {
+                    const selectId = `select-${selectCounter}`;
+                    // Store correct answer in lowercase for easy comparison
+                    correctAnswersMap[selectId] = correctAnswer.toLowerCase();
+                    selectCounter++;
+
+                    return `
+                        <select id="${selectId}" class="article-select inline-block mx-1 px-2 py-1 border border-gray-300 rounded-md bg-gray-50 text-base font-semibold text-blue-700 cursor-pointer focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors">
+                            <option value="" disabled selected>...</option>
+                            <option value="a">a</option>
+                            <option value="an">an</option>
+                            <option value="the">the</option>
+                            <option value="-">- (no article)</option>
+                        </select>
+                    `;
+                });
+
+                sentenceDiv.innerHTML = `<span class="inline-block w-8 font-bold text-gray-400 select-none">${index + 1}.</span> ${formattedSentence}`;
+                quizContainer.appendChild(sentenceDiv);
+            });
+
+            // Add event listeners to remove coloring when user changes an answer
+            document.querySelectorAll('.article-select').forEach(select => {
+                select.addEventListener('change', function() {
+                    this.classList.remove('correct', 'incorrect');
+                });
+            });
+        }
+
+        function checkAnswers() {
+            let score = 0;
+            const totalQuestions = Object.keys(correctAnswersMap).length;
+            let allAnswered = true;
+
+            for (const [id, correctAnswer] of Object.entries(correctAnswersMap)) {
+                const selectElement = document.getElementById(id);
+                const userAnswer = selectElement.value.toLowerCase();
+
+                // Reset classes
+                selectElement.classList.remove('correct', 'incorrect');
+
+                if (userAnswer === "") {
+                    allAnswered = false;
+                } else if (userAnswer === correctAnswer) {
+                    score++;
+                    selectElement.classList.add('correct');
+                } else {
+                    selectElement.classList.add('incorrect');
+                }
+            }
+
+            const resultBox = document.getElementById('result-message');
+            resultBox.classList.remove('hidden', 'bg-green-100', 'text-green-800', 'bg-blue-100', 'text-blue-800', 'bg-yellow-100', 'text-yellow-800');
+
+            if (!allAnswered) {
+                resultBox.innerHTML = `You have answered <strong>${score}</strong> correctly so far, but you missed some blanks!`;
+                resultBox.classList.add('bg-yellow-100', 'text-yellow-800');
+            } else if (score === totalQuestions) {
+                resultBox.innerHTML = `Perfect! You got <strong>${score}</strong> out of <strong>${totalQuestions}</strong> correct!`;
+                resultBox.classList.add('bg-green-100', 'text-green-800');
+            } else {
+                resultBox.innerHTML = `You got <strong>${score}</strong> out of <strong>${totalQuestions}</strong> correct. Check the red boxes and try again!`;
+                resultBox.classList.add('bg-blue-100', 'text-blue-800');
+            }
+        }
+
+        function resetQuiz() {
+            // Rebuild the quiz from scratch to reset selections and styling completely
+            buildQuiz();
+            const resultBox = document.getElementById('result-message');
+            resultBox.classList.add('hidden');
+        }
+
+        // Run on load
+        window.onload = buildQuiz;
+
+    </script>
+</body>
+</html>
